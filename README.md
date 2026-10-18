@@ -12,11 +12,11 @@ Cursor). Drop it in and ask for an animated, visual-first deck.
 
 ```bash
 # from the skills.sh registry (once published)
-npx skills add <your-handle>/animated-deck-builder
+npx skills add idanwork22/animated-deck-builder
 
 # target a specific agent
-npx skills add <your-handle>/animated-deck-builder --agent kiro-cli
-npx skills add <your-handle>/animated-deck-builder --global
+npx skills add idanwork22/animated-deck-builder --agent kiro-cli
+npx skills add idanwork22/animated-deck-builder --global
 ```
 
 Or copy the folder into a skills directory manually:
