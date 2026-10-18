@@ -1,0 +1,10 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "groupings": [
+    {
+      "title": "Presentations & Visuals",
+      "description": "Build self-contained HTML presentation decks with hand-authored JS/CSS animations and draw.io-style AWS architecture diagrams. Dark + bright themes, Amazon Ember, presenter mode, speaker notes, one offline file.",
+      "skills": ["animated-deck-builder"]
+    }
+  ]
+}

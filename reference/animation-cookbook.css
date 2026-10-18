@@ -1,0 +1,68 @@
+/* ============================================================================
+   animation-cookbook.css — paste-ready keyframes for Animated Deck Builder.
+
+   Every surface colour here is a CSS variable so dark + bright both work.
+   Each block says WHEN to use it and whether it survives a HEADLESS screenshot.
+   Rule: requestAnimationFrame and CSS animations are FROZEN by headless Chrome
+   screenshots / --virtual-time-budget. If you must CAPTURE the motion (for a PNG
+   in a pptx, a GIF), drive it from a setTimeout loop in JS instead. For LIVE
+   presenting, pure CSS is fine and smoother.
+   Re-trigger any of these on slide entry by toggling a class: in show(),
+   el.classList.remove('play'); void el.offsetWidth; el.classList.add('play').
+   ========================================================================== */
+
+/* 1. fadeUp — element rises and fades in. The default "appear" for any block.
+   Headless: frozen (CSS). Live: smooth. */
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.anim-fadeUp.play { animation: fadeUp .5s ease forwards; }
+
+/* 2. stagger-children — reveal a row/grid of cards one after another. Use for an
+   agenda, a list of options, a summary rail. Set the delays to taste.
+   Headless: frozen. Live: smooth. */
+.stagger.play > * { opacity:0; transform:translateY(24px); animation: fadeUp .5s ease forwards; }
+.stagger.play > *:nth-child(1){animation-delay:.05s}
+.stagger.play > *:nth-child(2){animation-delay:.20s}
+.stagger.play > *:nth-child(3){animation-delay:.35s}
+.stagger.play > *:nth-child(4){animation-delay:.50s}
+.stagger.play > *:nth-child(5){animation-delay:.65s}
+
+/* 3. travel-dot — a dot runs along a pipe to show data moving (log -> sink,
+   snapshot draining). CSS version for LIVE. For HEADLESS capture, remove the
+   animation and move .dot with a setTimeout loop (see travelByTimeout below). */
+@keyframes travel { 0%{left:0} 100%{left:100%} }
+.pipe { position:relative; height:6px; background:var(--grid); border-radius:3px; }
+.pipe .dot { position:absolute; top:50%; width:26px; height:26px; margin-top:-13px; border-radius:50%;
+  background:var(--green); box-shadow:0 0 22px var(--green); }
+.pipe.play .dot { animation: travel 2.2s ease-in-out infinite; }
+/* JS, headless-capturable:
+   function travelByTimeout(dot){let p=0;(function step(){p=(p+2)%100;dot.style.left=p+'%';setTimeout(step,40)})();}
+*/
+
+/* 4. pulse-ring — soft expanding shadow marks the "now" / live element.
+   Headless: frozen. Live: good for a heartbeat / "this is happening now". */
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,153,0,.45)} 50%{box-shadow:0 0 0 18px rgba(255,153,0,0)} }
+.pulse-ring { animation: pulse 2s ease-in-out infinite; }
+
+/* 5. morph-reveal — one shape becomes another (a document morphs into a table;
+   a NoSQL doc into JSONB vs normalized tables). Two states, transition width/opacity.
+   Drive by toggling .to on click. Headless: capture each END state separately. */
+.morph .before, .morph .after { transition: opacity .6s ease, transform .6s ease; }
+.morph .after { opacity:0; transform:scale(.96); position:absolute; }
+.morph.to .before { opacity:0; transform:scale(.96); }
+.morph.to .after  { opacity:1; transform:scale(1); position:relative; }
+
+/* 6. type-on — reveal text as if typed, for a log line or a code line.
+   Headless: frozen (steps() is still an animation). Live: good for a terminal feel.
+   Width must be a known ch count; monospace only. */
+@keyframes typeon { from{width:0} to{width:var(--ch,20ch)} }
+.type-on.play { display:inline-block; white-space:nowrap; overflow:hidden;
+  border-right:3px solid var(--green); animation: typeon 1.2s steps(var(--steps,20)) forwards; }
+
+/* 7. count-up — DO NOT USE unless explicitly asked. Idan dislikes count-up number
+   animations; show the final value immediately. Left here only as a reminder of
+   what to avoid. */
+
+/* Layout helpers used by the patterns above (theme-safe). */
+.card { background:var(--panel); border:2px solid var(--grid); border-radius:22px; color:var(--txt); }
+.node { background:var(--panel); border:2px solid var(--grid); border-radius:22px; color:var(--txt);
+  display:flex; align-items:center; justify-content:center; font-weight:800; }
